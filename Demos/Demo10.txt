@@ -1,0 +1,18 @@
+TASK: Heartbeat anomaly detection (ECG)
+
+    QUESTION:
+    Classify the heartbeat as Normal or PVC.
+
+    INPUT:
+    Signal_summary: The signal shows a sudden abnormal deviation and does not match the expected normal pattern.
+    Features: mean=0.06, variance=0.04, fft_mean_magnitude=0.34
+    Context: ECG sampled at 72Hz, window ~0.8s, lead=MLII
+
+    REASONING:
+    Step 1: Sudden deviation indicates abnormal morphology within the window.
+    Step 2: Not matching the expected pattern suggests an abnormal beat type.
+    Step 3: This aligns more with PVC than normal.
+
+    ANSWER:
+    LABEL: PVC
+    CONFIDENCE: 81

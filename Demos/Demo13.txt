@@ -1,0 +1,18 @@
+TASK: Heartbeat anomaly detection (ECG)
+
+    QUESTION:
+    Classify the heartbeat as Normal or PVC.
+
+    INPUT:
+    Signal_summary: The signal appears steady and similar to typical ECG segments for normal beats.
+    Features: mean=0.04, variance=0.02, fft_mean_magnitude=0.25
+    Context: ECG sampled at 72Hz, window ~0.8s, lead=MLII
+
+    REASONING:
+    Step 1: Steady behavior suggests the beat is not anomalous.
+    Step 2: Similarity to typical normal segments supports the normal label.
+    Step 3: No abnormal morphology cues are noted.
+
+    ANSWER:
+    LABEL: Normal
+    CONFIDENCE: 72

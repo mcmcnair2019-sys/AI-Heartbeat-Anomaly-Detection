@@ -1,0 +1,18 @@
+TASK: Heartbeat anomaly detection (ECG)
+
+    QUESTION:
+    Classify the heartbeat as Normal or PVC.
+
+    INPUT:
+    Signal_summary: The waveform is regular, with no abrupt spikes or distortions noted.
+    Features: mean=0.02, variance=0.01, fft_mean_magnitude=0.18
+    Context: ECG sampled at 72Hz, window ~0.8s, lead=MLII
+
+    REASONING:
+    Step 1: No abrupt spikes implies stable morphology.
+    Step 2: Regular pattern is characteristic of normal heartbeats.
+    Step 3: Normal is the most likely label given the description.
+
+    ANSWER:
+    LABEL: Normal
+    CONFIDENCE: 80

@@ -1,0 +1,1 @@
+Electrocardiogram (ECG) signals measure the electrical activity of the heart over time. The waveform reflects the depolarization and repolarization of heart muscle during each heartbeat. 

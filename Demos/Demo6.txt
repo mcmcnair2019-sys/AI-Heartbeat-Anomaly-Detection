@@ -1,0 +1,18 @@
+TASK: Heartbeat anomaly detection (ECG)
+
+    QUESTION:
+    Classify the heartbeat as Normal or PVC.
+
+    INPUT:
+    Signal_summary: The window contains an unusual spike and the waveform shape differs noticeably from typical beats.
+    Features: mean=0.07, variance=0.04, fft_mean_magnitude=0.36
+    Context: ECG sampled at 72Hz, window ~0.8s, lead=MLII
+
+    REASONING:
+    Step 1: Noticeable shape difference suggests an abnormal beat morphology.
+    Step 2: The irregular spike and deviation align with PVC descriptions.
+    Step 3: The evidence points more strongly to PVC than a normal beat.
+
+    ANSWER:
+    LABEL: PVC
+    CONFIDENCE: 80

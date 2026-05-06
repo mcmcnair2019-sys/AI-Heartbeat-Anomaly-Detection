@@ -1,0 +1,13 @@
+TASK: Heartbeat anomaly detection (ECG)
+    QUESTION:
+    Classify the heartbeat as Normal or PVC.
+    INPUT:
+    Signal_summary: Peaks and troughs follow a stable pattern and the overall signal variation is small.
+    Features: mean=0.02, variance=0.01, fft_mean_magnitude=0.20
+    Context: ECG sampled at 72Hz, window ~0.8s, lead=MLII
+    REASONING:
+    Step 1: Small variance suggests the signal is not showing abnormal irregularity.
+    Step 2: Stable morphology aligns with typical normal heartbeat patterns.
+    Step 3: Nothing indicates a distorted or abnormal beat shape.
+    ANSWER: LABEL: Normal
+    CONFIDENCE: 76

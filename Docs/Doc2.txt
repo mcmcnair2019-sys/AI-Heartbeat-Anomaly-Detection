@@ -1,0 +1,1 @@
+A typical ECG waveform contains several components including the P wave, QRS complex, and T wave. The QRS complex represents ventricular contraction and is usually sharp and narrow in normal heartbeats.

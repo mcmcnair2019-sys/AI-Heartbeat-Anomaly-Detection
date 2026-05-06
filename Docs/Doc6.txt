@@ -1,0 +1,1 @@
+In ECG signals, normal heartbeats usually maintain a consistent morphology across time. Abnormal beats may show sudden changes in amplitude or waveform shape.

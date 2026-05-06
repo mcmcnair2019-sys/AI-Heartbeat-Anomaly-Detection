@@ -1,0 +1,1 @@
+Signal variance can increase when abnormal heartbeats occur. PVC events often introduce irregular waveform features that differ from surrounding normal beats.

@@ -1,0 +1,1 @@
+ECG analysis often involves identifying characteristic waveform shapes and comparing them with known patterns for normal and abnormal heart activity.

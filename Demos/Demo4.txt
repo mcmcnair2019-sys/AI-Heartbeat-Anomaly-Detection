@@ -1,0 +1,14 @@
+TASK: Heartbeat anomaly detection (ECG)
+    QUESTION:
+    Classify the heartbeat as Normal or PVC.
+    INPUT:
+    Signal_summary: The signal looks distorted with an unusual broad-looking shape compared to typical beats.
+    Features: mean=0.06, variance=0.05, fft_mean_magnitude=0.38
+    Context: ECG sampled at 72Hz, window ~0.8s, lead=MLII
+    REASONING:
+    Step 1: Elevated variance suggests abnormal waveform variability.
+    Step 2: Distorted morphology is commonly associated with PVC beats.
+    Step 3: The described pattern is more consistent with PVC than normal.
+    ANSWER:
+    LABEL: PVC
+    CONFIDENCE: 84

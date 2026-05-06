@@ -1,0 +1,18 @@
+TASK: Heartbeat anomaly detection (ECG)
+
+    QUESTION:
+    Classify the heartbeat as Normal or PVC.
+
+    INPUT:
+    Signal_summary: The waveform looks atypical and irregular, suggesting an abnormal beat morphology.
+    Features: mean=0.06, variance=0.06, fft_mean_magnitude=0.42
+    Context: ECG sampled at 72Hz, window ~0.8s, lead=MLII
+
+    REASONING:
+    Step 1: High variance suggests strong irregular changes in the waveform.
+    Step 2: Atypical morphology is consistent with PVC beats.
+    Step 3: The overall evidence points to PVC.
+
+    ANSWER:
+    LABEL: PVC
+    CONFIDENCE: 86

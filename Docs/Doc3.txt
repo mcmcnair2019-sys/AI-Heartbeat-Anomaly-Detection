@@ -1,0 +1,1 @@
+Normal heartbeats typically show consistent waveform shapes and regular timing between beats. The electrical signal pattern remains stable across multiple heart cycles.

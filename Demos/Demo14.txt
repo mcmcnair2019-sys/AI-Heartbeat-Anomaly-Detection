@@ -1,0 +1,18 @@
+TASK: Heartbeat anomaly detection (ECG)
+
+    QUESTION:
+    Classify the heartbeat as Normal or PVC.
+
+    INPUT:
+    Signal_summary: The segment contains an irregular pattern and a noticeable morphology change within the beat window.
+    Features: mean=0.05, variance=0.04, fft_mean_magnitude=0.33
+    Context: ECG sampled at 72Hz, window ~0.8s, lead=MLII
+
+    REASONING:
+    Step 1: Irregular pattern suggests abnormal beat behavior.
+    Step 2: Morphology change aligns with ventricular-origin abnormal beats.
+    Step 3: This is more consistent with PVC than normal.
+
+    ANSWER:
+    LABEL: PVC
+    CONFIDENCE: 79

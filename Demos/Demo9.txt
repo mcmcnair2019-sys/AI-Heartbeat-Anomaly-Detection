@@ -1,0 +1,18 @@
+TASK: Heartbeat anomaly detection (ECG)
+
+    QUESTION:
+    Classify the heartbeat as Normal or PVC.
+
+    INPUT:
+    Signal_summary: The waveform has a consistent pattern and the signal does not look distorted.
+    Features: mean=0.03, variance=0.02, fft_mean_magnitude=0.24
+    Context: ECG sampled at 72Hz, window ~0.8s, lead=MLII
+
+    REASONING:
+    Step 1: Moderate-low variance still supports stable morphology.
+    Step 2: No distortion suggests normal beat structure.
+    Step 3: Lacking abnormal morphology indicators, normal is most likely.
+
+    ANSWER:
+    LABEL: Normal
+    CONFIDENCE: 73

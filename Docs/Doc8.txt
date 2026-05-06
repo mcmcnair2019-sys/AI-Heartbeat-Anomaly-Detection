@@ -1,0 +1,1 @@
+Noise in ECG signals can come from muscle movement, electrode displacement, or electrical interference. These artifacts should be distinguished from true cardiac abnormalities.
