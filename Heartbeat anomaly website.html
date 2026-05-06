@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZX-1 | AI For Smart Sensing</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --maroon:#3D0C02; --maroon2:#6B1A0F; --lav:#C5CAE9; --lavlite:#E8EAF6;
+  --mint:#C8E6C9; --green:#2E7D32; --bg:#FAFAF8; --text:#1a1a1a;
+  --gray:#607D8B; --border:#D1D5E8;
+}
+html { scroll-behavior:smooth; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+
+/* HEADER GRID */
+.site-header { display:grid; grid-template-columns:1fr 1fr 1fr 1fr 64px 64px; grid-template-rows:44px 52px 52px 52px; border-bottom:2px solid var(--maroon); }
+.hcell { border:1px solid var(--border); }
+.hcell-lav  { background:var(--lav); }
+.hcell-lavl { background:var(--lavlite); }
+.hcell-dark { background:var(--maroon); grid-column:5; grid-row:1/3; }
+.hcell-mint { background:var(--mint);   grid-column:6; grid-row:1; }
+.hcell-lav2 { background:var(--lav);    grid-column:6; grid-row:2/5; }
+.info-strip { grid-column:1/5; grid-row:1; display:grid; grid-template-columns:repeat(4,1fr); }
+.info-cell  { border:1px solid var(--border); background:var(--lavlite); padding:0 14px; display:flex; align-items:center; font-size:10px; color:var(--gray); font-family:'IBM Plex Mono',monospace; }
+.info-cell:last-child { background:#fff; }
+.grid-row   { grid-column:1/5; display:grid; grid-template-columns:repeat(3,1fr); }
+.grid-row.r2{grid-row:2} .grid-row.r3{grid-row:3} .grid-row.r4{grid-row:4}
+
+/* HERO */
+.hero { padding:52px 64px 44px; background:#fff; border-bottom:3px solid var(--lav); }
+.proj-id { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--gray); letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
+.hero h1 { font-family:'DM Serif Display',serif; font-size:clamp(40px,5.5vw,68px); color:var(--maroon); line-height:1.06; margin-bottom:14px; }
+.hero-sub { font-size:15px; color:var(--gray); max-width:560px; line-height:1.65; }
+
+/* INFO BAR */
+.info-bar { display:grid; grid-template-columns:repeat(3,1fr); border-bottom:1px solid var(--border); }
+.info-panel { padding:28px 36px; border-right:1px solid var(--border); }
+.info-panel:last-child { border-right:none; }
+.panel-label { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--gray); margin-bottom:12px; }
+.about-panel { background:var(--maroon); color:#fff; }
+.about-panel .panel-label { color:var(--lav); }
+.about-panel p { font-size:12.5px; line-height:1.75; color:#E8D5D0; }
+.bio-panel { background:var(--lavlite); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.bio-avatar { width:64px; height:64px; border-radius:50%; background:var(--lav); border:3px solid var(--maroon); display:flex; align-items:center; justify-content:center; font-family:'DM Serif Display',serif; font-size:26px; color:var(--maroon); margin-bottom:10px; }
+.bio-name { font-family:'DM Serif Display',serif; font-size:17px; color:var(--maroon); margin-bottom:3px; }
+.bio-role { font-size:10px; color:var(--gray); font-family:'IBM Plex Mono',monospace; letter-spacing:1px; }
+.course-panel { background:#fff; }
+.detail-row { margin-bottom:10px; }
+.detail-key { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); }
+.detail-val { font-size:12.5px; color:var(--text); font-weight:500; margin-top:1px; }
+
+/* LINK BAR */
+.link-bar { background:var(--lav); padding:20px 36px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:2px solid var(--maroon); }
+.link-bar-label { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--maroon); margin-right:4px; }
+.btn { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:3px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; text-decoration:none; transition:all .15s; white-space:nowrap; cursor:pointer; border:2px solid transparent; }
+.btn-primary { background:var(--maroon); color:#fff; border-color:var(--maroon); }
+.btn-primary:hover { background:var(--maroon2); }
+.btn-outline { background:transparent; color:var(--maroon); border-color:var(--maroon); }
+.btn-outline:hover { background:var(--maroon); color:#fff; }
+.btn-green { background:var(--green); color:#fff; border-color:var(--green); }
+.btn-green:hover { background:#1B5E20; }
+.icon { width:13px; height:13px; fill:currentColor; flex-shrink:0; }
+
+/* DEMO SECTION */
+.demo-section { background:#0f0f14; padding:56px 64px; border-top:3px solid var(--maroon); }
+.demo-eyebrow { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--lav); margin-bottom:8px; }
+.demo-title { font-family:'DM Serif Display',serif; font-size:32px; color:#fff; margin-bottom:8px; }
+.demo-sub { font-size:13px; color:#90A4AE; max-width:520px; line-height:1.65; margin-bottom:32px; }
+.demo-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+.demo-controls, .demo-viz { background:#1a1a24; border:1px solid #2a2a3a; border-radius:6px; padding:28px; }
+.ctrl-label, .viz-label { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#607D8B; margin-bottom:8px; display:block; }
+
+.beat-selector { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:20px; }
+.beat-btn { padding:10px 12px; border-radius:4px; border:2px solid #2a2a3a; background:#141420; color:#90A4AE; font-family:'IBM Plex Mono',monospace; font-size:11px; cursor:pointer; transition:all .15s; text-align:left; }
+.beat-btn:hover { border-color:#607D8B; color:#cfd8dc; }
+.beat-btn.active-normal { border-color:#81C784; background:#1B3A1D; color:#A5D6A7; }
+.beat-btn.active-pvc    { border-color:#E57373; background:#3A1B1B; color:#EF9A9A; }
+.beat-btn .bt-label { font-size:9px; letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:2px; opacity:.7; }
+.beat-btn .bt-val   { font-size:13px; font-weight:600; display:block; }
+
+.feature-row { display:flex; justify-content:space-between; margin-bottom:6px; padding:8px 10px; background:#141420; border-radius:4px; border:1px solid #2a2a3a; }
+.feat-name { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#607D8B; }
+.feat-value { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#B0BEC5; }
+
+.run-btn { width:100%; margin-top:16px; padding:14px; font-size:13px; border-radius:4px; background:var(--maroon); color:#fff; border:none; font-family:'IBM Plex Mono',monospace; font-weight:600; cursor:pointer; transition:all .15s; }
+.run-btn:hover { background:var(--maroon2); }
+.run-btn:disabled { background:#2a2a3a; color:#607D8B; cursor:not-allowed; }
+
+.step-log { margin-top:14px; padding:10px; background:#141420; border-radius:4px; border:1px solid #2a2a3a; font-family:'IBM Plex Mono',monospace; font-size:9px; color:#455A64; line-height:1.8; }
+
+.demo-viz { display:flex; flex-direction:column; gap:18px; }
+canvas#ecgCanvas { width:100%; height:130px; display:block; background:#0d0d18; border-radius:4px; border:1px solid #2a2a3a; }
+
+.retrieved-chunk { background:#141420; border:1px solid #2a2a3a; border-radius:4px; padding:12px; font-family:'IBM Plex Mono',monospace; font-size:9px; color:#78909C; line-height:1.6; max-height:76px; overflow:hidden; margin-bottom:6px; }
+.retrieved-chunk.demo-chunk { border-left:3px solid #64B5F6; }
+.retrieved-chunk.doc-chunk  { border-left:3px solid #FFB74D; }
+.chunk-tag { font-size:8px; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; opacity:.8; }
+
+.reasoning-box { background:#141420; border:1px solid #2a2a3a; border-radius:4px; padding:14px; font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:#B0BEC5; line-height:1.7; min-height:80px; white-space:pre-wrap; }
+
+.prediction-row { display:flex; gap:10px; }
+.pred-card { flex:1; background:#141420; border:1px solid #2a2a3a; border-radius:4px; padding:12px; text-align:center; }
+.pred-card .pc-label { font-family:'IBM Plex Mono',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; color:#607D8B; margin-bottom:5px; }
+.pred-card .pc-value { font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600; }
+.pred-normal { color:#81C784; } .pred-pvc { color:#EF9A9A; } .pred-wait { color:#607D8B; }
+.result-correct   { border-color:#388E3C !important; }
+.result-incorrect { border-color:#C62828 !important; }
+
+@keyframes dots { 0%,100%{content:''} 25%{content:'.'} 50%{content:'..'} 75%{content:'...'} }
+.thinking-dots::after { content:''; animation:dots 1.2s steps(4,end) infinite; }
+
+@media(max-width:768px){
+  .site-header{display:none} .hero{padding:32px 24px}
+  .info-bar{grid-template-columns:1fr} .demo-section{padding:36px 24px}
+  .demo-grid{grid-template-columns:1fr} .link-bar{padding:16px 24px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="info-strip">
+    <div class="info-cell">Matthew McNair</div>
+    <div class="info-cell">ZX-1</div>
+    <div class="info-cell">AI Capstone &nbsp;·&nbsp; Spring 2026</div>
+    <div class="info-cell"></div>
+  </div>
+  <div class="hcell hcell-dark"></div>
+  <div class="hcell hcell-mint"></div>
+  <div class="hcell hcell-lav2"></div>
+  <div class="grid-row r2"><div class="hcell hcell-lav"></div><div class="hcell hcell-lav"></div><div class="hcell hcell-lav"></div></div>
+  <div class="grid-row r3"><div class="hcell hcell-lavl"></div><div class="hcell hcell-lavl"></div><div class="hcell hcell-lavl"></div></div>
+  <div class="grid-row r4"><div class="hcell" style="background:#fff"></div><div class="hcell" style="background:#fff"></div><div class="hcell" style="background:#fff"></div></div>
+</header>
+
+<section class="hero">
+  <div class="proj-id">ZX-1 &nbsp;·&nbsp; AI7993 &nbsp;·&nbsp; Spring 2026</div>
+  <h1>AI For Smart<br>Sensing</h1>
+  <p class="hero-sub">ECG heartbeat classification using Retrieval-Augmented Generation and Large Language Models applied to real-world IoT sensor data.</p>
+</section>
+
+<div class="info-bar">
+  <div class="info-panel about-panel">
+    <div class="panel-label">About</div>
+    <p>Builds a pipeline that converts raw ECG signals into LLM-friendly text, retrieves relevant medical knowledge using hybrid BM25 + embedding search, reranks with a cross-encoder, and classifies each heartbeat as Normal or PVC with step-by-step reasoning.</p>
+  </div>
+  <div class="info-panel bio-panel">
+    <div class="panel-label">Team</div>
+    <div class="bio-avatar">M</div>
+    <div class="bio-name">Matthew McNair</div>
+    <div class="bio-role">KSU &nbsp;·&nbsp; AI Capstone</div>
+  </div>
+  <div class="info-panel course-panel">
+    <div class="panel-label">Course Info</div>
+    <div class="detail-row"><div class="detail-key">Course</div><div class="detail-val">AI7993 — AI Capstone</div></div>
+    <div class="detail-row"><div class="detail-key">Semester</div><div class="detail-val">Spring 2026</div></div>
+    <div class="detail-row"><div class="detail-key">Project ID</div><div class="detail-val">ZX-1</div></div>
+    <div class="detail-row"><div class="detail-key">Dataset</div><div class="detail-val">MIT-BIH Arrhythmia</div></div>
+    <div class="detail-row"><div class="detail-key">Instructor</div><div class="detail-val">Dr. Zongxing Xie</div></div>
+  </div>
+</div>
+
+<div class="link-bar">
+  <span class="link-bar-label">Navigate</span>
+  <a href="ZX-1-AISmartSensing-FinalReport.pdf" class="btn btn-primary" target="_blank">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg>Final Report
+  </a>
+  <a href="https://github.com/mcmcnair2019-sys/AI-Heartbeat-Anomaly-Detection" class="btn btn-outline" target="_blank">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z"/></svg>GitHub
+  </a>
+  <a href="https://youtu.be/4-KwnCRYee4" class="btn btn-green" target="_blank">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z"/></svg>Presentation Video
+  </a>
+</div>
+
+<!-- INTERACTIVE DEMO -->
+<section class="demo-section">
+  <div class="demo-eyebrow">🫀 Live Demo</div>
+  <div class="demo-title">Try the Pipeline</div>
+  <p class="demo-sub">Select a pre-loaded ECG beat, run the simulated RAG pipeline, and watch the system retrieve context and classify the heartbeat — step by step.</p>
+
+  <div class="demo-grid">
+    <div class="demo-controls">
+      <span class="ctrl-label">Select a Beat</span>
+      <div class="beat-selector" id="beatSelector"></div>
+
+      <span class="ctrl-label">Extracted Features</span>
+      <div class="feature-row"><span class="feat-name">Mean Amplitude</span><span class="feat-value" id="fMean">—</span></div>
+      <div class="feature-row"><span class="feat-name">Variance</span><span class="feat-value" id="fVar">—</span></div>
+      <div class="feature-row"><span class="feat-name">FFT Mean Magnitude</span><span class="feat-value" id="fFFT">—</span></div>
+      <div class="feature-row"><span class="feat-name">True Label</span><span class="feat-value" id="fLabel">—</span></div>
+
+      <button class="run-btn" id="runBtn" disabled>▶ &nbsp;Run Pipeline</button>
+
+      <div class="step-log" id="stepLog">Select a beat to begin...</div>
+    </div>
+
+    <div class="demo-viz">
+      <div>
+        <span class="viz-label">ECG Waveform</span>
+        <canvas id="ecgCanvas"></canvas>
+      </div>
+      <div>
+        <span class="viz-label">Retrieved Knowledge Chunks</span>
+        <div id="chunk1" class="retrieved-chunk"><div class="chunk-tag" style="color:#607D8B;">Run pipeline to see retrieved chunks...</div></div>
+        <div id="chunk2" class="retrieved-chunk"></div>
+      </div>
+      <div>
+        <span class="viz-label">LLM Reasoning</span>
+        <div class="reasoning-box" id="reasoningBox">Reasoning will appear here after running the pipeline...</div>
+      </div>
+      <div>
+        <span class="viz-label">Classification Result</span>
+        <div class="prediction-row">
+          <div class="pred-card" id="predCard"><div class="pc-label">Prediction</div><div class="pc-value pred-wait" id="predValue">—</div></div>
+          <div class="pred-card" id="confCard"><div class="pc-label">Confidence</div><div class="pc-value pred-wait" id="confValue">—</div></div>
+          <div class="pred-card" id="resultCard"><div class="pc-label">Result</div><div class="pc-value pred-wait" id="resultValue">—</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const BEATS=[
+  {id:"N-1",label:"Normal",shortLabel:"Normal Beat #1",mean:-0.3132,variance:0.0352,fft:1.865,signal:[-0.31,-0.30,-0.29,-0.30,-0.31,-0.32,-0.31,-0.30,-0.29,-0.28,-0.27,-0.25,-0.22,-0.18,-0.12,-0.05,0.02,0.08,0.12,0.10,0.04,-0.03,-0.10,-0.18,-0.25,-0.30,-0.33,-0.35,-0.36,-0.36,-0.35,-0.34,-0.33,-0.32,-0.31,-0.30,-0.30,-0.29,-0.28,-0.28,-0.27,-0.27,-0.26,-0.26,-0.25,-0.25,-0.25,-0.24,-0.24,-0.23,-0.23,-0.22,-0.22,-0.21,-0.21,-0.20,-0.20]},
+  {id:"N-2",label:"Normal",shortLabel:"Normal Beat #2",mean:-0.3314,variance:0.0255,fft:1.772,signal:[-0.33,-0.32,-0.32,-0.33,-0.34,-0.34,-0.33,-0.32,-0.31,-0.30,-0.28,-0.25,-0.20,-0.14,-0.07,0.00,0.06,0.10,0.11,0.09,0.04,-0.02,-0.09,-0.16,-0.23,-0.28,-0.32,-0.35,-0.37,-0.38,-0.37,-0.36,-0.35,-0.34,-0.33,-0.33,-0.32,-0.31,-0.31,-0.30,-0.30,-0.29,-0.29,-0.28,-0.28,-0.27,-0.27,-0.26,-0.26,-0.25,-0.24,-0.24,-0.23,-0.23,-0.22,-0.21,-0.21]},
+  {id:"V-1",label:"PVC",shortLabel:"PVC Beat #1",mean:0.0821,variance:0.1843,fft:2.341,signal:[-0.28,-0.26,-0.23,-0.18,-0.11,-0.02,0.09,0.22,0.38,0.57,0.78,1.02,1.28,1.52,1.68,1.71,1.58,1.32,0.98,0.62,0.28,-0.02,-0.24,-0.38,-0.44,-0.42,-0.35,-0.25,-0.14,-0.04,0.04,0.09,0.11,0.10,0.08,0.05,0.02,-0.01,-0.04,-0.07,-0.09,-0.11,-0.13,-0.14,-0.15,-0.16,-0.17,-0.17,-0.18,-0.18,-0.18,-0.17,-0.17,-0.16,-0.15,-0.14,-0.13]},
+  {id:"V-2",label:"PVC",shortLabel:"PVC Beat #2",mean:0.0614,variance:0.1522,fft:2.187,signal:[-0.22,-0.20,-0.16,-0.10,-0.02,0.08,0.20,0.35,0.52,0.71,0.92,1.14,1.34,1.48,1.54,1.48,1.31,1.05,0.74,0.42,0.13,-0.12,-0.30,-0.40,-0.43,-0.40,-0.32,-0.22,-0.12,-0.03,0.04,0.08,0.10,0.09,0.07,0.04,0.01,-0.02,-0.05,-0.08,-0.10,-0.12,-0.13,-0.14,-0.15,-0.16,-0.16,-0.17,-0.17,-0.17,-0.16,-0.16,-0.15,-0.14,-0.13,-0.12,-0.11]}
+];
+const CHUNKS={
+  normal:[
+    {type:"doc",text:"Normal heartbeats typically show consistent waveform shapes and regular timing between beats. The electrical signal pattern remains stable across multiple heart cycles."},
+    {type:"demo",text:"DEMO — Normal Beat\nFeatures: mean≈-0.33, variance≈0.03\nStep 1: Low variance → stable morphology.\nStep 2: Regular shape typical of normal beats.\nANSWER: LABEL: Normal | CONFIDENCE: 78"}
+  ],
+  pvc:[
+    {type:"doc",text:"PVC beats produce wider or distorted waveform shapes compared to normal beats. Signal variance is typically elevated. The abnormal electrical origin leads to irregular signal patterns."},
+    {type:"demo",text:"DEMO — PVC Beat\nFeatures: mean≈0.07, variance≈0.18\nStep 1: High variance → abnormal waveform.\nStep 2: Distorted morphology consistent with PVC.\nANSWER: LABEL: PVC | CONFIDENCE: 84"}
+  ]
+};
+const RESPONSES={
+  "N-1":{label:"Normal",confidence:81,reasoning:`REASONING:\nStep 1: Mean amplitude of -0.313 and low variance (0.035)\n  indicate a stable waveform without abrupt changes.\n\nStep 2: FFT magnitude of 1.865 matches normal sinus beat\n  frequency profiles. No high-frequency irregularities.\n\nStep 3: Retrieved knowledge confirms low-variance,\n  consistent-morphology beats indicate normal conduction.\n\nANSWER:\nLABEL: Normal\nCONFIDENCE: 81`},
+  "N-2":{label:"Normal",confidence:77,reasoning:`REASONING:\nStep 1: Mean of -0.331 and variance of 0.026 indicate\n  a stable, regular waveform with no anomalous deviations.\n\nStep 2: Signal follows a consistent morphology pattern.\n  No sudden peaks or irregular distortions observed.\n\nStep 3: Retrieved demonstration confirms this feature\n  profile matches known normal beat patterns.\n\nANSWER:\nLABEL: Normal\nCONFIDENCE: 77`},
+  "V-1":{label:"PVC",confidence:88,reasoning:`REASONING:\nStep 1: Mean of 0.082 and variance of 0.184 indicate\n  significant waveform irregularity. Elevated variance\n  is a strong PVC indicator.\n\nStep 2: Large positive excursion (peak ≈ 1.71) is\n  characteristic of the broad, distorted morphology\n  of PVC beats originating in the ventricles.\n\nStep 3: Retrieved knowledge confirms high variance +\n  distorted morphology = classic PVC features.\n\nANSWER:\nLABEL: PVC\nCONFIDENCE: 88`},
+  "V-2":{label:"PVC",confidence:84,reasoning:`REASONING:\nStep 1: Variance of 0.152 is far above the normal\n  range (< 0.04), flagging abnormal morphology.\n\nStep 2: Broad positive peak followed by slow return\n  to baseline is inconsistent with normal conduction.\n\nStep 3: Retrieved PVC demonstration confirms this\n  pattern (high FFT, elevated variance, broad peak)\n  is typical of PVC beats.\n\nANSWER:\nLABEL: PVC\nCONFIDENCE: 84`}
+};
+
+let selectedBeat=null, isRunning=false;
+
+const sel=document.getElementById('beatSelector');
+BEATS.forEach(b=>{
+  const btn=document.createElement('button');
+  btn.className='beat-btn'; btn.id=`btn-${b.id}`;
+  btn.innerHTML=`<span class="bt-label">${b.label}</span><span class="bt-val">${b.shortLabel}</span>`;
+  btn.onclick=()=>selectBeat(b);
+  sel.appendChild(btn);
+});
+
+function selectBeat(beat){
+  selectedBeat=beat;
+  document.querySelectorAll('.beat-btn').forEach(b=>b.className='beat-btn');
+  document.getElementById(`btn-${beat.id}`).className=`beat-btn ${beat.label==='Normal'?'active-normal':'active-pvc'}`;
+  document.getElementById('fMean').textContent=beat.mean.toFixed(4);
+  document.getElementById('fVar').textContent=beat.variance.toFixed(4);
+  document.getElementById('fFFT').textContent=beat.fft.toFixed(3);
+  const lbl=document.getElementById('fLabel');
+  lbl.textContent=beat.label; lbl.style.color=beat.label==='Normal'?'#81C784':'#EF9A9A';
+  drawECG(beat.signal,beat.label);
+  document.getElementById('runBtn').disabled=false;
+  resetOutputs();
+  setStepLog('Beat selected. Press ▶ Run Pipeline to begin.');
+}
+
+function drawECG(signal,label){
+  const canvas=document.getElementById('ecgCanvas');
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=canvas.offsetWidth*dpr; canvas.height=canvas.offsetHeight*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const W=canvas.offsetWidth,H=canvas.offsetHeight;
+  ctx.fillStyle='#0d0d18'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#1a1a2a'; ctx.lineWidth=0.5;
+  for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.strokeStyle='#2a2a3a'; ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
+  const min=Math.min(...signal),max=Math.max(...signal),range=max-min||1,pad=16;
+  const color=label==='Normal'?'#81C784':'#EF9A9A';
+  ctx.strokeStyle=color; ctx.lineWidth=2; ctx.shadowColor=color; ctx.shadowBlur=6;
+  ctx.beginPath();
+  signal.forEach((v,i)=>{
+    const x=(i/(signal.length-1))*(W-pad*2)+pad;
+    const y=pad+(1-(v-min)/range)*(H-pad*2);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.stroke(); ctx.shadowBlur=0;
+  ctx.fillStyle=label==='Normal'?'#1B3A1D':'#3A1B1B';
+  ctx.fillRect(W-72,6,66,20);
+  ctx.fillStyle=color; ctx.font='bold 9px IBM Plex Mono,monospace';
+  ctx.textAlign='center'; ctx.fillText(label.toUpperCase(),W-39,20);
+}
+
+function resetOutputs(){
+  document.getElementById('chunk1').innerHTML='<div class="chunk-tag" style="color:#607D8B;">Awaiting retrieval...</div>';
+  document.getElementById('chunk2').innerHTML='';
+  document.getElementById('reasoningBox').textContent='Reasoning will appear here after running the pipeline...';
+  ['predValue','confValue','resultValue'].forEach(id=>{
+    const el=document.getElementById(id); el.textContent='—'; el.className='pc-value pred-wait';
+  });
+  document.getElementById('predCard').className='pred-card';
+  document.getElementById('resultCard').className='pred-card';
+}
+function setStepLog(html){document.getElementById('stepLog').innerHTML=html;}
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+
+document.getElementById('runBtn').onclick=async()=>{
+  if(!selectedBeat||isRunning)return;
+  isRunning=true; document.getElementById('runBtn').disabled=true;
+  const beat=selectedBeat,resp=RESPONSES[beat.id],chunks=beat.label==='Normal'?CHUNKS.normal:CHUNKS.pvc;
+  resetOutputs();
+  setStepLog('Step 1: Encoding signal as query vector...');
+  await delay(700);
+  setStepLog('Step 1: ✓ Query encoded\nStep 2: Running BM25 keyword retrieval...');
+  await delay(600);
+  setStepLog('Step 1: ✓\nStep 2: ✓ BM25 complete\nStep 3: Computing cosine similarity...');
+  await delay(600);
+  setStepLog('Step 1–3: ✓\nStep 4: Combining hybrid scores (50/50)...');
+  await delay(500);
+  setStepLog('Step 1–4: ✓\nStep 5: Reranking with CrossEncoder...');
+  await delay(800);
+  const c1=chunks[0],c2=chunks[1];
+  document.getElementById('chunk1').className=`retrieved-chunk ${c1.type==='demo'?'demo-chunk':'doc-chunk'}`;
+  document.getElementById('chunk1').innerHTML=`<div class="chunk-tag" style="color:${c1.type==='demo'?'#64B5F6':'#FFB74D'}">${c1.type==='demo'?'🔵 Demo Example':'🟠 Domain Doc'}</div>${c1.text}`;
+  document.getElementById('chunk2').className=`retrieved-chunk ${c2.type==='demo'?'demo-chunk':'doc-chunk'}`;
+  document.getElementById('chunk2').innerHTML=`<div class="chunk-tag" style="color:${c2.type==='demo'?'#64B5F6':'#FFB74D'}">${c2.type==='demo'?'🔵 Demo Example':'🟠 Domain Doc'}</div>${c2.text}`;
+  setStepLog('Step 1–5: ✓ Top-2 chunks retrieved & reranked\nStep 6: Constructing prompt...');
+  await delay(500);
+  setStepLog('Step 1–6: ✓\nStep 7: LLM generating reasoning<span class="thinking-dots"></span>');
+  const box=document.getElementById('reasoningBox'); box.textContent='';
+  for(let i=0;i<resp.reasoning.length;i++){box.textContent+=resp.reasoning[i];if(i%3===0)await delay(18);}
+  await delay(300);
+  setStepLog('Step 1–7: ✓\nStep 8: Parsing LABEL and CONFIDENCE...');
+  await delay(400);
+  const pv=document.getElementById('predValue');
+  pv.textContent=resp.label; pv.className=`pc-value ${resp.label==='Normal'?'pred-normal':'pred-pvc'}`;
+  const cv=document.getElementById('confValue');
+  cv.textContent=`${resp.confidence}%`; cv.className=`pc-value ${resp.label==='Normal'?'pred-normal':'pred-pvc'}`;
+  const correct=resp.label===beat.label;
+  const rv=document.getElementById('resultValue');
+  rv.textContent=correct?'✓ Correct':'✗ Wrong';
+  rv.className=`pc-value ${correct?'pred-normal':'pred-pvc'}`;
+  document.getElementById('resultCard').className=`pred-card ${correct?'result-correct':'result-incorrect'}`;
+  setStepLog(`Steps 1–8: ✓ Pipeline complete\nPredicted: ${resp.label} (${resp.confidence}%)\nGround truth: ${beat.label} — ${correct?'✓ Correct':'✗ Incorrect'}`);
+  isRunning=false; document.getElementById('runBtn').disabled=false;
+};
+
+
+// 
+// UPLOAD SECTION
+// 
+
+// Build upload section HTML and append to body
+const uploadSection = document.createElement('section');
+uploadSection.style.cssText = 'background:#0a0a12;padding:56px 64px;border-top:1px solid #2a2a3a;';
+uploadSection.innerHTML = `
+<div style="font-family:IBM Plex Mono,monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C5CAE9;margin-bottom:8px;">⬆ Upload Your Own</div>
+<div style="font-family:DM Serif Display,serif;font-size:32px;color:#fff;margin-bottom:8px;">Classify a Real ECG Beat</div>
+<p style="font-size:13px;color:#90A4AE;max-width:560px;line-height:1.65;margin-bottom:32px;">
+  Upload a CSV or TXT file of ECG amplitude values. Requires <code style="background:#1a1a24;padding:2px 6px;border-radius:3px;font-size:11px;">api.py</code> running locally on port 5000.
+</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+  <div style="background:#1a1a24;border:1px solid #2a2a3a;border-radius:6px;padding:28px;">
+    <div style="font-family:IBM Plex Mono,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#607D8B;margin-bottom:12px;">Upload ECG File</div>
+    <label id="uploadLabel" style="display:block;border:2px dashed #2a2a3a;border-radius:6px;padding:32px;text-align:center;cursor:pointer;color:#455A64;font-family:IBM Plex Mono,monospace;font-size:11px;">
+      <div style="font-size:28px;margin-bottom:8px;">📂</div>
+      <div>Click or drag to upload CSV / TXT</div>
+      <div style="font-size:9px;margin-top:4px;opacity:.6;">One amplitude value per line, or comma-separated</div>
+      <input type="file" id="ecgFileInput" accept=".csv,.txt" style="display:none;">
+    </label>
+    <div id="uploadStatus" style="margin-top:12px;font-family:IBM Plex Mono,monospace;font-size:10px;color:#607D8B;min-height:16px;"></div>
+    <div style="margin-top:16px;background:#141420;border:1px solid #2a2a3a;border-radius:4px;padding:12px;">
+      <div style="font-family:IBM Plex Mono,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#607D8B;margin-bottom:8px;">Detected Features</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#607D8B;">Samples</span><span id="uSamples" style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#B0BEC5;">—</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#607D8B;">Mean</span><span id="uMean" style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#B0BEC5;">—</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#607D8B;">Variance</span><span id="uVar" style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#B0BEC5;">—</span></div>
+      <div style="display:flex;justify-content:space-between;"><span style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#607D8B;">FFT Magnitude</span><span id="uFFT" style="font-family:IBM Plex Mono,monospace;font-size:10px;color:#B0BEC5;">—</span></div>
+    </div>
+    <button id="classifyBtn" disabled style="width:100%;margin-top:16px;padding:14px;font-size:13px;border-radius:4px;background:#3D0C02;color:#fff;border:none;font-family:IBM Plex Mono,monospace;font-weight:600;cursor:not-allowed;opacity:.5;">▶ &nbsp;Classify with LLM</button>
+  </div>
+  <div style="background:#1a1a24;border:1px solid #2a2a3a;border-radius:6px;padding:28px;display:flex;flex-direction:column;gap:16px;">
+    <div>
+      <div style="font-family:IBM Plex Mono,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#607D8B;margin-bottom:8px;">Uploaded ECG Waveform</div>
+      <canvas id="uploadCanvas" style="width:100%;height:120px;display:block;background:#0d0d18;border-radius:4px;border:1px solid #2a2a3a;"></canvas>
+    </div>
+    <div>
+      <div style="font-family:IBM Plex Mono,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#607D8B;margin-bottom:8px;">Classification Result</div>
+      <div style="display:flex;gap:10px;">
+        <div style="flex:1;background:#141420;border:1px solid #2a2a3a;border-radius:4px;padding:12px;text-align:center;">
+          <div style="font-family:IBM Plex Mono,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#607D8B;margin-bottom:5px;">Prediction</div>
+          <div id="uPred" style="font-family:IBM Plex Mono,monospace;font-size:20px;font-weight:600;color:#607D8B;">—</div>
+        </div>
+        <div style="flex:1;background:#141420;border:1px solid #2a2a3a;border-radius:4px;padding:12px;text-align:center;">
+          <div style="font-family:IBM Plex Mono,monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#607D8B;margin-bottom:5px;">Confidence</div>
+          <div id="uConf" style="font-family:IBM Plex Mono,monospace;font-size:20px;font-weight:600;color:#607D8B;">—</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:IBM Plex Mono,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#607D8B;margin-bottom:8px;">LLM Reasoning</div>
+      <div id="uReasoning" style="background:#141420;border:1px solid #2a2a3a;border-radius:4px;padding:14px;font-family:IBM Plex Mono,monospace;font-size:9.5px;color:#B0BEC5;line-height:1.7;min-height:100px;white-space:pre-wrap;">Reasoning will appear here after classification...</div>
+    </div>
+  </div>
+</div>`;
+document.body.appendChild(uploadSection);
+
+let uploadedSignal = null;
+
+document.getElementById('uploadLabel').addEventListener('dragover', e => { e.preventDefault(); document.getElementById('uploadLabel').style.borderColor='#C5CAE9'; });
+document.getElementById('uploadLabel').addEventListener('dragleave', () => { document.getElementById('uploadLabel').style.borderColor='#2a2a3a'; });
+document.getElementById('uploadLabel').addEventListener('drop', e => { e.preventDefault(); document.getElementById('uploadLabel').style.borderColor='#2a2a3a'; if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+document.getElementById('ecgFileInput').addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+
+function handleFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const values = e.target.result.split(/[\n,]+/).map(v=>parseFloat(v.trim())).filter(v=>!isNaN(v));
+    if (values.length < 10) {
+      document.getElementById('uploadStatus').textContent = '⚠ Could not parse — need numeric values';
+      document.getElementById('uploadStatus').style.color = '#EF9A9A';
+      return;
+    }
+    uploadedSignal = values;
+    document.getElementById('uploadStatus').textContent = '✓ Loaded ' + values.length + ' samples from ' + file.name;
+    document.getElementById('uploadStatus').style.color = '#81C784';
+    const mean = values.reduce((a,b)=>a+b,0)/values.length;
+    const variance = values.reduce((a,b)=>a+(b-mean)**2,0)/values.length;
+    document.getElementById('uSamples').textContent = values.length;
+    document.getElementById('uMean').textContent = mean.toFixed(4);
+    document.getElementById('uVar').textContent = variance.toFixed(4);
+    document.getElementById('uFFT').textContent = '(server-side)';
+    drawUploadCanvas(values, '#90CAF9');
+    const btn = document.getElementById('classifyBtn');
+    btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
+  };
+  reader.readAsText(file);
+}
+
+function drawUploadCanvas(signal, color) {
+  const canvas = document.getElementById('uploadCanvas');
+  const dpr = window.devicePixelRatio||1;
+  canvas.width = canvas.offsetWidth*dpr; canvas.height = canvas.offsetHeight*dpr;
+  const ctx = canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const W=canvas.offsetWidth,H=canvas.offsetHeight;
+  ctx.fillStyle='#0d0d18'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#1a1a2a'; ctx.lineWidth=0.5;
+  for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  const min=Math.min(...signal),max=Math.max(...signal),range=max-min||1,pad=12;
+  ctx.strokeStyle=color; ctx.lineWidth=1.8; ctx.shadowColor=color; ctx.shadowBlur=5;
+  ctx.beginPath();
+  signal.forEach((v,i)=>{
+    const x=(i/(signal.length-1))*(W-pad*2)+pad;
+    const y=pad+(1-(v-min)/range)*(H-pad*2);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.stroke(); ctx.shadowBlur=0;
+}
+
+document.getElementById('classifyBtn').addEventListener('click', async () => {
+  if (!uploadedSignal) return;
+  const btn = document.getElementById('classifyBtn');
+  btn.disabled = true; btn.textContent = '⏳  Classifying...';
+  document.getElementById('uReasoning').textContent = 'Calling API — make sure api.py is running on port 5000...';
+  document.getElementById('uPred').textContent = '—';
+  document.getElementById('uConf').textContent = '—';
+  try {
+    const resp = await fetch('http://localhost:5000/classify', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({signal: uploadedSignal})
+    });
+    if (!resp.ok) { const err=await resp.json(); throw new Error(err.error||'API error'); }
+    const data = await resp.json();
+    document.getElementById('uFFT').textContent = data.features.fft.toFixed(4);
+    const color = data.label==='Normal'?'#81C784':'#EF9A9A';
+    document.getElementById('uPred').textContent = data.label||'Unknown';
+    document.getElementById('uPred').style.color = color;
+    document.getElementById('uConf').textContent = data.confidence>=0?data.confidence+'%':'—';
+    document.getElementById('uConf').style.color = color;
+    const box = document.getElementById('uReasoning'); box.textContent='';
+    for(let i=0;i<data.reasoning.length;i++){box.textContent+=data.reasoning[i];if(i%4===0)await new Promise(r=>setTimeout(r,12));}
+    drawUploadCanvas(uploadedSignal, color);
+  } catch(err) {
+    document.getElementById('uReasoning').textContent = 'Error: '+err.message+'\n\nMake sure api.py is running:\n  python api.py';
+    document.getElementById('uReasoning').style.color='#EF9A9A';
+  }
+  btn.disabled=false; btn.textContent='▶  Classify with LLM';
+});
+
+window.addEventListener('load',()=>{
+  const canvas=document.getElementById('ecgCanvas');
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=canvas.offsetWidth*dpr; canvas.height=canvas.offsetHeight*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const W=canvas.offsetWidth,H=canvas.offsetHeight;
+  ctx.fillStyle='#0d0d18'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#1a1a2a'; ctx.lineWidth=0.5;
+  for(let x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.strokeStyle='#2a2a3a'; ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
+  ctx.fillStyle='#2a2a3a'; ctx.font='11px IBM Plex Mono,monospace';
+  ctx.textAlign='center'; ctx.fillText('Select a beat above to display waveform',W/2,H/2+4);
+});
+</script>
+</body>
+</html>
